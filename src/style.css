@@ -539,6 +539,146 @@ button:focus {
 }
 
 /* --------- */
+/* Writeups */
+/* --------- */
+.writeup-section {
+  position: relative !important;
+  padding-top: 150px !important;
+  padding-bottom: 30px !important;
+  background-image: var(--section-background-color) !important;
+}
+
+.writeup-card {
+  padding-top: 50px !important;
+  padding-bottom: 50px !important;
+  padding-left: 25px !important;
+  padding-right: 25px !important;
+  height: auto !important;
+}
+
+.writeup-card-view {
+  box-shadow: 0 4px 5px 3px rgba(119, 53, 136, 0.459) !important;
+  color: white !important;
+  background-color: transparent !important;
+  opacity: 0.9 !important;
+  transition: all 0.5s ease 0s !important;
+  height: 100% !important;
+}
+
+.writeup-card-view:hover {
+  transform: scale(1.02) !important;
+  overflow: hidden !important;
+  box-shadow: 0 4px 4px 5px rgba(129, 72, 144, 0.561) !important;
+}
+
+.writeup-heading {
+  color: white !important;
+  font-size: 2.3em !important;
+  font-weight: 500 !important;
+  padding-top: 10px !important;
+}
+
+.filter-section {
+  border: 1px solid rgba(255, 255, 255, 0.2) !important;
+  transition: all 0.3s ease !important;
+}
+
+.filter-section:hover {
+  border-color: rgba(255, 255, 255, 0.4) !important;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3) !important;
+}
+
+.filter-section .form-control,
+.filter-section .form-select {
+  border: 1px solid rgba(255, 255, 255, 0.3) !important;
+  transition: all 0.3s ease !important;
+}
+
+.filter-section .form-control:focus,
+.filter-section .form-select:focus {
+  border-color: #c770f0 !important;
+  box-shadow: 0 0 0 0.2rem rgba(199, 112, 240, 0.25) !important;
+  background-color: rgba(255, 255, 255, 0.95) !important;
+}
+
+/* --------- */
+/* Writeup Viewer */
+/* --------- */
+.writeup-viewer-section {
+  position: relative !important;
+  padding-top: 150px !important;
+  padding-bottom: 30px !important;
+  background-image: var(--section-background-color) !important;
+}
+
+.writeup-header {
+  transition: all 0.3s ease !important;
+}
+
+.writeup-header:hover {
+  border-color: rgba(255, 255, 255, 0.4) !important;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3) !important;
+}
+
+.writeup-content {
+  transition: all 0.3s ease !important;
+}
+
+.writeup-content:hover {
+  border-color: rgba(255, 255, 255, 0.2) !important;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2) !important;
+}
+
+.markdown-content h1,
+.markdown-content h2,
+.markdown-content h3 {
+  margin-top: 30px !important;
+  margin-bottom: 15px !important;
+}
+
+.markdown-content pre {
+  background: rgba(0, 0, 0, 0.3) !important;
+  padding: 15px !important;
+  border-radius: 5px !important;
+  overflow-x: auto !important;
+  margin: 15px 0 !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+}
+
+.markdown-content code {
+  font-family: 'Courier New', monospace !important;
+  font-size: 14px !important;
+}
+
+.markdown-content li {
+  margin: 8px 0 !important;
+  padding-left: 20px !important;
+}
+
+.markdown-content strong {
+  color: #ffd700 !important;
+}
+
+.markdown-content em {
+  color: #c770f0 !important;
+}
+
+/* Back to Writeups Button Hover Effects */
+.back-to-writeups-btn {
+  cursor: pointer !important;
+  transition: all 0.3s ease !important;
+  border-color: rgba(255, 255, 255, 0.5) !important;
+  color: white !important;
+}
+
+.back-to-writeups-btn:hover {
+  background-color: rgba(255, 255, 255, 0.1) !important;
+  border-color: rgba(255, 255, 255, 0.8) !important;
+  transform: translateY(-2px) !important;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3) !important;
+}
+
+/* --------- */
 /* About */
 /* --------- */
 

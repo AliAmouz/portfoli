@@ -1,0 +1,48 @@
+{
+  "machines": [
+    {
+      "id": "b3dr0ck",
+      "imgPath": "b3dr0ck.png",
+      "platform": "TryHackMe",
+      "title": "b3dr0ck",
+      "description": "Barney is setting up the ABC webserver, and trying to use TLS certs to secure connections",
+      "difficulty": "Easy",
+      "writeupLink": "/writeup/b3dr0ck",
+      "machineLink": "https://tryhackme.com/room/b3dr0ck",
+      "date": "2025-01-15"
+    },
+    {
+      "id": "blue",
+      "imgPath": "blue.png",
+      "platform": "TryHackMe",
+      "title": "Blue",
+      "description": "A Windows machine focused on EternalBlue vulnerability exploitation.",
+      "difficulty": "Easy",
+      "writeupLink": "/writeup/blue",
+      "machineLink": "https://tryhackme.com/room/blue",
+      "date": "2024-01-15"
+    },
+    {
+      "id": "lame",
+      "imgPath": "lame.png",
+      "platform": "HackTheBox",
+      "title": "Lame",
+      "description": "A Linux machine that involves FTP enumeration, Samba exploitation, and basic privilege escalation techniques. Perfect for beginners.",
+      "difficulty": "Easy",
+      "writeupLink": "/writeup/lame",
+      "machineLink": "https://app.hackthebox.com/machines/Lame",
+      "date": "2024-02-20"
+    },
+    {
+      "id": "vulnnet",
+      "imgPath": "vulnnet.png",
+      "platform": "TryHackMe",
+      "title": "VulnNet",
+      "description": "A medium-difficulty machine focusing on web application vulnerabilities.",
+      "difficulty": "Medium",
+      "writeupLink": "/writeup/vulnnet",
+      "machineLink": "https://tryhackme.com/room/vulnnet",
+      "date": "2024-03-10"
+    }
+  ]
+}

@@ -13,6 +13,7 @@ import {
   AiOutlineFundProjectionScreen,
   AiOutlineUser,
 } from "react-icons/ai";
+import { FaEye } from "react-icons/fa";
 
 import { CgFileDocument } from "react-icons/cg";
 
@@ -79,6 +80,16 @@ function NavBar() {
                   style={{ marginBottom: "2px" }}
                 />{" "}
                 Projects
+              </Nav.Link>
+            </Nav.Item>
+
+            <Nav.Item>
+              <Nav.Link
+                as={Link}
+                to="/writeups"
+                onClick={() => updateExpanded(false)}
+              >
+                <FaEye style={{ marginBottom: "2px" }} /> Writeups
               </Nav.Link>
             </Nav.Item>
 
