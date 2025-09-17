@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from "react";
-import { Container, Row, Col, Button, Spinner } from "react-bootstrap";
-import { useParams, useNavigate, Link } from "react-router-dom";
-import { FaArrowLeft, FaGithub, FaCalendar, FaTag } from "react-icons/fa";
+import { Container, Button, Spinner } from "react-bootstrap";
+import { useParams } from "react-router-dom";
+import { FaGithub, FaCalendar, FaTag } from "react-icons/fa";
 import { SiTryhackme, SiHackthebox } from "react-icons/si";
 import Particle from "../Particle";
 import { fetchWriteupFromGitHub, markdownToHtml, GITHUB_CONFIG, getGitHubUrl } from "./writeupUtils";
-import machinesData from "../../Assets/machines.json";
 
 // Mock writeup data - replace with your actual writeups
 const writeupsData = {
@@ -426,7 +425,6 @@ cat /root/root.txt
 
 function WriteupViewer() {
   const { writeupId } = useParams();
-  const navigate = useNavigate();
   const [writeup, setWriteup] = useState(null);
   const [loading, setLoading] = useState(true);
 

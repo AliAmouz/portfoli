@@ -60,6 +60,10 @@ Each machine should follow this structure:
 ### Notes
 
 - The system automatically assigns numeric IDs for React rendering
-- All machines currently use the default image (`bedrock.png`)
-- To use custom images, you'll need to modify the `Writeups.js` file to import and use specific images
+- **Custom Images**: Currently configured to use custom images for specific machine IDs:
+  - Machine ID 1: `bedrock.png` (default)
+  - Machine ID 2: `startup.png` 
+  - Machine ID 3: `robot.png`
+  - All other machines: `bedrock.png` (default)
+- To add more custom images, modify the image assignment logic in `Writeups.js`
 - The writeup content is still stored in `WriteupViewer.js` - consider moving this to separate markdown files for better maintainability

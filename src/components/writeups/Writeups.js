@@ -1,18 +1,32 @@
 import React, { useState, useMemo } from "react";
-import { Container, Row, Col, Form, Button, ButtonGroup } from "react-bootstrap";
+import { Container, Row, Col, Form, Button } from "react-bootstrap";
 import WriteupCard from "./WriteupCard";
 import Particle from "../Particle";
 // You can add machine images to src/Assets/Writeups/ directory
 import defaultMachine from "../../Assets/Writeups/bedrock.png"; // Placeholder image - replace with actual machine images
+import startupMachine from "../../Assets/Writeups/startup.png"; // Custom image for machine ID 2
+import robotMachine from "../../Assets/Writeups/robot.png"; // Custom image for machine ID 3
 import machinesData from "../../Assets/machines.json";
 
 function Writeups() {
-  // Get writeup data from JSON file and add default image
-  const writeupsData = machinesData.machines.map((machine, index) => ({
-    ...machine,
-    id: index + 1, // Add numeric ID for React keys
-    imgPath: defaultMachine // Use default image for all machines
-  }));
+  // Get writeup data from JSON file and add custom images based on ID
+  const writeupsData = machinesData.machines.map((machine, index) => {
+    const machineId = index + 1;
+    let customImage = defaultMachine;
+    
+    // Assign custom images based on machine ID
+    if (machineId === 2) {
+      customImage = startupMachine;
+    } else if (machineId === 3) {
+      customImage = robotMachine;
+    }
+    
+    return {
+      ...machine,
+      id: machineId, // Add numeric ID for React keys
+      imgPath: customImage // Use custom image based on ID
+    };
+  });
 
   // Filter states
   const [platformFilter, setPlatformFilter] = useState("All");
