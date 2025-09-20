@@ -19,37 +19,48 @@ function Home2() {
               LET ME <span className="purple"> INTRODUCE </span> MYSELF
             </h1>
             <p className="home-about-body">
-              I fell in love with cybersecurity and programming, and I have learned
-              quite a bit along the way... 🔐
-              <br />
-              <br />I am fluent in languages like
-              <i>
-                <b className="purple"> Python, C, Java, Rust, and JavaScript. </b>
-              </i>
-              <br />
-              <br />
-              My fields of Interest are building new &nbsp;
-              <i>
-                <b className="purple">Web Technologies and Applications </b> and
-                also in areas related to{" "}
-                <b className="purple">
-                  Cybersecurity and Penetration Testing.
-                </b>
-              </i>
+              I am a <b className="purple">cybersecurity enthusiast</b> and{" "}
+              <b className="purple">software engineer</b> with a strong drive to
+              build and secure modern technologies. My journey began with a
+              curiosity for programming and hacking, which grew into a passion
+              for creating software while understanding how to break and protect
+              it. 🔐
               <br />
               <br />
-              Whenever possible, I also apply my passion for developing products
-              with <b className="purple">React.js</b> and
-              <i>
-                <b className="purple">
-                  {" "}
-                  Modern Javascript Libraries and Frameworks
-                </b>
-              </i>
-              &nbsp; like
-              <i>
-                <b className="purple"> Express.js and Node.js</b>
-              </i>
+              I work fluently with{" "}
+              <b className="purple">Python, C, Java, Rust, and JavaScript</b>,
+              and I enjoy applying these skills to both{" "}
+              <b className="purple">full-stack web development</b> and{" "}
+              <b className="purple">penetration testing</b>.
+              <br />
+              <br />
+              My experience spans from building scalable applications with{" "}
+              <b className="purple">React.js, Express.js, and Node.js</b> to
+              exploring advanced topics in{" "}
+              <b className="purple">
+                network security, exploit development, and system-level
+                programming
+              </b>
+              .
+              <br />
+              <br />
+              What sets me apart is my dual perspective: I don’t just develop
+              applications — I also analyze how they can be attacked, and more
+              importantly, how they can be secured. This allows me to contribute
+              as both a <b className="purple">problem solver</b> and a{" "}
+              <b className="purple">protector</b> in any tech team.
+              <br />
+              <br />
+              I’m currently focused on sharpening my skills through{" "}
+              <b className="purple">Hack The Box</b>, contributing to{" "}
+              <b className="purple">open-source security tools</b>, and
+              continuously growing my{" "}
+              <b className="purple">software engineering fundamentals</b>.
+              <br />
+              <br />
+              I bring curiosity, persistence, and a hands-on mindset to every
+              challenge, whether it’s debugging a web app, reverse engineering a
+              system, or collaborating on innovative projects. 🚀
             </p>
           </Col>
           <Col md={4} className="myAvtar">
