@@ -1,13 +1,14 @@
 import React, { useState, useEffect } from "react";
-import { Container, Button, Spinner } from "react-bootstrap";
+import { Container, Button, Spinner, Alert } from "react-bootstrap";
 import { useParams } from "react-router-dom";
-import { FaGithub, FaCalendar, FaTag } from "react-icons/fa";
+import { FaGithub, FaCalendar, FaTag, FaSync } from "react-icons/fa";
 import { SiTryhackme, SiHackthebox } from "react-icons/si";
 import Particle from "../Particle";
-import { fetchWriteupFromGitHub, markdownToHtml, GITHUB_CONFIG, getGitHubUrl } from "./writeupUtils";
+import { fetchWriteupById } from "../utils/githubWriteupFetcher";
+import { markdownToHtml } from "./writeupUtils";
 
-// Mock writeup data - replace with your actual writeups
-const writeupsData = {
+// Fallback writeup data for when GitHub fetch fails
+const fallbackWriteups = {
   "b3dr0ck": {
     id: "b3dr0ck",
     title: "b3dr0ck - TryHackMe",
@@ -428,44 +429,51 @@ function WriteupViewer() {
   const [writeup, setWriteup] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    const loadWriteup = async () => {
-      setLoading(true);
-      
-      // First try to get from local data
-      let foundWriteup = writeupsData[writeupId];
-      
-      if (foundWriteup) {
-        // Try to fetch from GitHub if configured
-                 if (GITHUB_CONFIG.username !== 'yourusername') {
-           try {
-             const githubContent = await fetchWriteupFromGitHub(
-               writeupId,
-               foundWriteup.platform,
-               GITHUB_CONFIG.username, 
-               GITHUB_CONFIG.repo, 
-               GITHUB_CONFIG.branch
-             );
-             
-             if (githubContent) {
-               foundWriteup = {
-                 ...foundWriteup,
-                 content: githubContent,
-                 githubUrl: getGitHubUrl(writeupId, foundWriteup.platform)
-               };
-             }
-           } catch (error) {
-             console.log('Using local content for writeup:', writeupId);
-           }
-         }
-        
-        setWriteup(foundWriteup);
-      }
-      
-      setLoading(false);
-    };
+  const [error, setError] = useState(null);
 
+  const loadWriteup = async (platform = "tryhackme") => {
+    try {
+      setLoading(true);
+      setError(null);
+
+      // Try to fetch from GitHub first
+      const githubWriteup = await fetchWriteupById(writeupId, platform);
+      
+      if (githubWriteup) {
+        setWriteup(githubWriteup);
+      } else {
+        // Try the other platform
+        const otherPlatform = platform === "tryhackme" ? "hackthebox" : "tryhackme";
+        const otherWriteup = await fetchWriteupById(writeupId, otherPlatform);
+        
+        if (otherWriteup) {
+          setWriteup(otherWriteup);
+        } else {
+          // Fallback to local data
+          const localWriteup = fallbackWriteups[writeupId];
+          if (localWriteup) {
+            setWriteup(localWriteup);
+          } else {
+            setError("Writeup not found");
+          }
+        }
+      }
+    } catch (err) {
+      console.error("Error loading writeup:", err);
+      setError("Failed to load writeup");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const retryLoad = () => {
     loadWriteup();
+  };
+
+  useEffect(() => {
+    if (writeupId) {
+      loadWriteup();
+    }
   }, [writeupId]);
 
   const getPlatformIcon = (platform) => {
@@ -510,7 +518,26 @@ function WriteupViewer() {
         <Container>
           <div style={{ textAlign: "center", padding: "100px 0" }}>
             <Spinner animation="border" variant="primary" />
-            <p style={{ color: "white", marginTop: "20px" }}>Loading writeup...</p>
+            <p style={{ color: "white", marginTop: "20px" }}>Loading writeup from GitHub...</p>
+          </div>
+        </Container>
+      </Container>
+    );
+  }
+
+  if (error) {
+    return (
+      <Container fluid className="writeup-viewer-section">
+        <Particle />
+        <Container>
+          <div style={{ textAlign: "center", padding: "100px 0" }}>
+            <Alert variant="danger" style={{ maxWidth: "600px", margin: "0 auto" }}>
+              <h4>Error Loading Writeup</h4>
+              <p>{error}</p>
+              <Button variant="outline-danger" onClick={retryLoad}>
+                <FaSync /> Retry
+              </Button>
+            </Alert>
           </div>
         </Container>
       </Container>

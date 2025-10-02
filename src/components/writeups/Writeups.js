@@ -1,32 +1,13 @@
 import React, { useState, useMemo } from "react";
-import { Container, Row, Col, Form, Button } from "react-bootstrap";
+import { Container, Row, Col, Form, Button, Spinner, Alert } from "react-bootstrap";
 import WriteupCard from "./WriteupCard";
 import Particle from "../Particle";
-// You can add machine images to src/Assets/Writeups/ directory
-import defaultMachine from "../../Assets/Writeups/bedrock.png"; // Placeholder image - replace with actual machine images
-import startupMachine from "../../Assets/Writeups/startup.png"; // Custom image for machine ID 2
-import robotMachine from "../../Assets/Writeups/robot.png"; // Custom image for machine ID 3
-import machinesData from "../../Assets/machines.json";
+import { useWriteups } from "../../hooks/useWriteups";
+import { FaSync, FaGithub, FaClock } from "react-icons/fa";
 
 function Writeups() {
-  // Get writeup data from JSON file and add custom images based on ID
-  const writeupsData = machinesData.machines.map((machine, index) => {
-    const machineId = index + 1;
-    let customImage = defaultMachine;
-    
-    // Assign custom images based on machine ID
-    if (machineId === 2) {
-      customImage = startupMachine;
-    } else if (machineId === 3) {
-      customImage = robotMachine;
-    }
-    
-    return {
-      ...machine,
-      id: machineId, // Add numeric ID for React keys
-      imgPath: customImage // Use custom image based on ID
-    };
-  });
+  // Use the custom hook to fetch writeups automatically
+  const { writeups, loading, error, lastUpdated, refreshWriteups } = useWriteups();
 
   // Filter states
   const [platformFilter, setPlatformFilter] = useState("All");
@@ -36,7 +17,7 @@ function Writeups() {
 
   // Filtered writeups
   const filteredWriteups = useMemo(() => {
-    return writeupsData.filter(writeup => {
+    return writeups.filter(writeup => {
       // Platform filter
       if (platformFilter !== "All" && writeup.platform !== platformFilter) {
         return false;
@@ -97,7 +78,37 @@ function Writeups() {
         </h1>
         <p style={{ color: "white" }}>
           Here are some of the machines I've completed on TryHackMe and HackTheBox platforms.
+          {lastUpdated && (
+            <span style={{ fontSize: "12px", opacity: 0.7, display: "block", marginTop: "5px" }}>
+              <FaClock /> Last updated: {new Date(lastUpdated).toLocaleString()}
+            </span>
+          )}
         </p>
+
+        {/* Error Alert */}
+        {error && (
+          <Alert variant="warning" style={{ marginBottom: "20px" }}>
+            <FaGithub /> Failed to fetch latest writeups from GitHub. Showing cached content.
+            <Button 
+              variant="outline-warning" 
+              size="sm" 
+              onClick={refreshWriteups}
+              style={{ marginLeft: "10px" }}
+            >
+              <FaSync /> Retry
+            </Button>
+          </Alert>
+        )}
+
+        {/* Loading Spinner */}
+        {loading && (
+          <div style={{ textAlign: "center", margin: "20px 0" }}>
+            <Spinner animation="border" variant="light" />
+            <p style={{ color: "white", marginTop: "10px" }}>
+              Fetching latest writeups from GitHub...
+            </p>
+          </div>
+        )}
 
         {/* Filter Controls */}
         <div className="filter-section" style={{ 
@@ -171,11 +182,22 @@ function Writeups() {
                 variant="outline-light" 
                 onClick={clearFilters}
                 size="sm"
+                style={{ marginRight: "10px" }}
               >
                 Clear All Filters
               </Button>
+              <Button 
+                variant="outline-success" 
+                onClick={refreshWriteups}
+                size="sm"
+                disabled={loading}
+                style={{ marginRight: "10px" }}
+              >
+                <FaSync className={loading ? "fa-spin" : ""} /> 
+                {loading ? " Refreshing..." : " Refresh from GitHub"}
+              </Button>
               <span style={{ color: "white", marginLeft: "15px" }}>
-                Showing {filteredWriteups.length} of {writeupsData.length} writeups
+                Showing {filteredWriteups.length} of {writeups.length} writeups
               </span>
             </Col>
           </Row>
