@@ -4,7 +4,7 @@ import { useParams } from "react-router-dom";
 import { FaGithub, FaCalendar, FaTag, FaSync } from "react-icons/fa";
 import { SiTryhackme, SiHackthebox } from "react-icons/si";
 import Particle from "../Particle";
-import { fetchWriteupById } from "../utils/githubWriteupFetcher";
+import { fetchWriteupById } from "../../utils/githubWriteupFetcher";
 import { markdownToHtml } from "./writeupUtils";
 
 // Fallback writeup data for when GitHub fetch fails
@@ -443,7 +443,7 @@ function WriteupViewer() {
         setWriteup(githubWriteup);
       } else {
         // Try the other platform
-        const otherPlatform = platform === "tryhackme" ? "hackthebox" : "tryhackme";
+        const otherPlatform = platform === "tryhackme" ? "hackthbox" : "tryhackme";
         const otherWriteup = await fetchWriteupById(writeupId, otherPlatform);
         
         if (otherWriteup) {
@@ -480,7 +480,7 @@ function WriteupViewer() {
     switch (platform?.toLowerCase()) {
       case "tryhackme":
         return <SiTryhackme />;
-      case "hackthebox":
+      case "hackthbox":
         return <SiHackthebox />;
       default:
         return null;
@@ -491,7 +491,7 @@ function WriteupViewer() {
     switch (platform?.toLowerCase()) {
       case "tryhackme":
         return "#88cc14";
-      case "hackthebox":
+      case "hackthbox":
         return "#9fef00";
       default:
         return "#007bff";

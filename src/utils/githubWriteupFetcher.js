@@ -128,13 +128,13 @@ export const fetchAllWriteups = async (forceRefresh = false) => {
       const platformContents = await fetchRepoContents(platform);
       if (!platformContents) continue;
 
-      // Filter for markdown files
+      // Filter for markdown files (both .md and files without extension)
       const markdownFiles = platformContents.filter(file => 
-        file.type === 'file' && file.name.endsWith('.md')
+        file.type === 'file' && (file.name.endsWith('.md') || !file.name.includes('.'))
       );
 
       for (const file of markdownFiles) {
-        const writeupId = file.name.replace('.md', '');
+        const writeupId = file.name.endsWith('.md') ? file.name.replace('.md', '') : file.name;
         const filePath = `${platform}/${file.name}`;
         
         // Fetch markdown content
@@ -159,7 +159,9 @@ export const fetchAllWriteups = async (forceRefresh = false) => {
         // Create writeup object
         const writeup = {
           id: writeupId,
-          platform: platform.charAt(0).toUpperCase() + platform.slice(1),
+          platform: platform === 'hackthbox' ? 'HackTheBox' : 
+                     platform === 'tryhackme' ? 'TryHackMe' : 
+                     platform.charAt(0).toUpperCase() + platform.slice(1),
           title: metadata.title || writeupId,
           description: metadata.description || 'A detailed writeup of this machine.',
           difficulty: metadata.difficulty,
@@ -198,7 +200,7 @@ const getMachineLink = (writeupId, platform) => {
   switch (platform.toLowerCase()) {
     case 'tryhackme':
       return `https://tryhackme.com/room/${writeupId}`;
-    case 'hackthebox':
+    case 'hackthbox':
       return `https://app.hackthebox.com/machines/${writeupId}`;
     default:
       return null;
@@ -210,8 +212,15 @@ const getMachineLink = (writeupId, platform) => {
  */
 export const fetchWriteupById = async (writeupId, platform) => {
   try {
-    const filePath = `${platform.toLowerCase()}/${writeupId}.md`;
-    const content = await fetchFileContent(filePath);
+    // Try with .md extension first, then without extension
+    let filePath = `${platform.toLowerCase()}/${writeupId}.md`;
+    let content = await fetchFileContent(filePath);
+    
+    // If not found with .md extension, try without extension
+    if (!content) {
+      filePath = `${platform.toLowerCase()}/${writeupId}`;
+      content = await fetchFileContent(filePath);
+    }
     
     if (!content) {
       return null;
@@ -231,7 +240,9 @@ export const fetchWriteupById = async (writeupId, platform) => {
 
     return {
       id: writeupId,
-      platform: platform.charAt(0).toUpperCase() + platform.slice(1),
+      platform: platform === 'hackthbox' ? 'HackTheBox' : 
+                 platform === 'tryhackme' ? 'TryHackMe' : 
+                 platform.charAt(0).toUpperCase() + platform.slice(1),
       title: metadata.title || writeupId,
       description: metadata.description || 'A detailed writeup of this machine.',
       difficulty: metadata.difficulty,

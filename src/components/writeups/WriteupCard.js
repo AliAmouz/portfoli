@@ -10,7 +10,7 @@ function WriteupCard(props) {
     switch (platform.toLowerCase()) {
       case "tryhackme":
         return <SiTryhackme />;
-      case "hackthebox":
+      case "hackthbox":
         return <SiHackthebox />;
       default:
         return <FaEye />;
@@ -21,7 +21,7 @@ function WriteupCard(props) {
     switch (platform.toLowerCase()) {
       case "tryhackme":
         return "#88cc14"; // TryHackMe green
-      case "hackthebox":
+      case "hackthbox":
         return "#9fef00"; // HackTheBox green
       default:
         return "#007bff"; // Default blue

@@ -23,7 +23,7 @@ writeups/
 │   ├── machine1.png (optional)
 │   ├── machine2.md
 │   └── machine2.png (optional)
-└── hackthebox/
+└── hackthbox/
     ├── machine1.md
     ├── machine1.png (optional)
     ├── machine2.md
@@ -40,7 +40,7 @@ export const WRITEUP_CONFIG = {
     username: 'YourGitHubUsername', // Your GitHub username
     repo: 'writeups', // Your writeups repository name
     branch: 'main', // Default branch
-    platforms: ['tryhackme', 'hackthebox'] // Supported platforms
+    platforms: ['tryhackme', 'hackthbox'] // Supported platforms
   },
   // ... other settings
 };
@@ -103,11 +103,11 @@ src/
 
 1. **Create the markdown file** in the appropriate folder:
    - `tryhackme/machine-name.md`
-   - `hackthebox/machine-name.md`
+   - `hackthbox/machine-name.md`
 
 2. **Add an image** (optional):
    - `tryhackme/machine-name.png`
-   - `hackthebox/machine-name.png`
+   - `hackthbox/machine-name.png`
 
 3. **Include metadata** in your markdown:
    ```markdown

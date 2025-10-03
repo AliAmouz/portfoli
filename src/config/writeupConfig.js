@@ -7,7 +7,7 @@ export const WRITEUP_CONFIG = {
     username: 'AliAmouz', // Your GitHub username
     repo: 'writeups', // Your writeups repository name
     branch: 'main', // Default branch
-    platforms: ['tryhackme', 'hackthebox'] // Supported platforms
+    platforms: ['tryhackme', 'hackthbox'] // Supported platforms
   },
 
   // Image Settings
@@ -19,7 +19,7 @@ export const WRITEUP_CONFIG = {
         'https://images.unsplash.com/photo-1518709268805-4e9042af2176?w=400&h=300&fit=crop',
         'https://images.unsplash.com/photo-1563013544-824ae1b704d3?w=400&h=300&fit=crop'
       ],
-      hackthebox: [
+      hackthbox: [
         'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=400&h=300&fit=crop',
         'https://images.unsplash.com/photo-1518709268805-4e9042af2176?w=400&h=300&fit=crop',
         'https://images.unsplash.com/photo-1563013544-824ae1b704d3?w=400&h=300&fit=crop'
@@ -74,7 +74,7 @@ export const getMachineLink = (writeupId, platform) => {
   switch (platform.toLowerCase()) {
     case 'tryhackme':
       return `https://tryhackme.com/room/${writeupId}`;
-    case 'hackthebox':
+    case 'hackthbox':
       return `https://app.hackthebox.com/machines/${writeupId}`;
     default:
       return null;
