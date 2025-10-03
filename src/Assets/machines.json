@@ -12,6 +12,28 @@
       "date": "2025-01-15"
     },
     {
+      "id": "code",
+      "imgPath": "code.png",
+      "platform": "HackTheBox",
+      "title": "Code",
+      "description": "HackTheBox machine writeup for Code.",
+      "difficulty": "Medium",
+      "writeupLink": "/writeup/code",
+      "machineLink": "https://app.hackthebox.com/machines/code",
+      "date": "2024-04-05"
+    },
+    {
+      "id": "code2",
+      "imgPath": "code2.png",
+      "platform": "HackTheBox",
+      "title": "Code2",
+      "description": "HackTheBox machine writeup for Code2.",
+      "difficulty": "Medium",
+      "writeupLink": "/writeup/code2",
+      "machineLink": "https://app.hackthebox.com/machines/code2",
+      "date": "2024-04-15"
+    },
+    {
       "id": "blue",
       "imgPath": "blue.png",
       "platform": "TryHackMe",

@@ -6,11 +6,11 @@ import { useWriteups } from "../../hooks/useWriteups";
 import { FaSync, FaGithub, FaClock } from "react-icons/fa";
 
 function Writeups() {
-  // Use the custom hook to fetch writeups automatically
+  // Use the custom hook to fetch writeups automatically from GitHub (with local fallback)
   const { writeups, loading, error, lastUpdated, refreshWriteups } = useWriteups();
 
-  // Filter states
-  const [platformFilter, setPlatformFilter] = useState("All");
+  // Filter states (Platform filter with only TryHackMe and HackTheBox)
+  const [platformFilter, setPlatformFilter] = useState("TryHackMe");
   const [difficultyFilter, setDifficultyFilter] = useState("All");
   const [dateFilter, setDateFilter] = useState("All");
   const [searchTerm, setSearchTerm] = useState("");
@@ -18,8 +18,8 @@ function Writeups() {
   // Filtered writeups
   const filteredWriteups = useMemo(() => {
     return writeups.filter(writeup => {
-      // Platform filter
-      if (platformFilter !== "All" && writeup.platform !== platformFilter) {
+      // Platform filter (no "All" option)
+      if (writeup.platform !== platformFilter) {
         return false;
       }
 
@@ -59,11 +59,11 @@ function Writeups() {
 
       return true;
     });
-  }, [platformFilter, difficultyFilter, dateFilter, searchTerm]);
+  }, [platformFilter, difficultyFilter, dateFilter, searchTerm, writeups]);
 
   // Clear all filters
   const clearFilters = () => {
-    setPlatformFilter("All");
+    setPlatformFilter("TryHackMe");
     setDifficultyFilter("All");
     setDateFilter("All");
     setSearchTerm("");
@@ -88,7 +88,7 @@ function Writeups() {
         {/* Error Alert */}
         {error && (
           <Alert variant="warning" style={{ marginBottom: "20px" }}>
-            <FaGithub /> Failed to fetch latest writeups from GitHub. Showing cached content.
+            <FaGithub /> Failed to fetch latest writeups from GitHub. Showing cached or local content.
             <Button 
               variant="outline-warning" 
               size="sm" 
@@ -127,7 +127,6 @@ function Writeups() {
                   onChange={(e) => setPlatformFilter(e.target.value)}
                   style={{ backgroundColor: "rgba(255, 255, 255, 0.9)" }}
                 >
-                  <option value="All">All Platforms</option>
                   <option value="TryHackMe">TryHackMe</option>
                   <option value="HackTheBox">HackTheBox</option>
                 </Form.Select>
