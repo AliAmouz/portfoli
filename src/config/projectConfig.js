@@ -54,11 +54,11 @@ export const PROJECT_CONFIG = {
 
   // Filtering Settings
   filtering: {
-    minRepoSize: 100, // Minimum repository size in KB
+    minRepoSize: 0, // Minimum repository size in KB (set to 0 to include all)
     minStars: 0, // Minimum number of stars
     minForks: 0, // Minimum number of forks
     excludeForks: false, // Whether to exclude forked repositories
-    includeArchived: false, // Whether to include archived repositories
+    includeArchived: true, // Whether to include archived repositories
     includePrivate: false // Whether to include private repositories (requires authentication)
   }
 };

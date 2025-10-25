@@ -3,7 +3,9 @@ import { Container, Row, Col, Button, Spinner, Alert } from "react-bootstrap";
 import ProjectCard from "./ProjectCards";
 import Particle from "../Particle";
 import { useProjects } from "../../hooks/useProjects";
-import { FaSync, FaGithub, FaClock } from "react-icons/fa";
+import { FaSync, FaGithub, FaClock, FaBug, FaDatabase } from "react-icons/fa";
+import { testGitHubAPI } from "../../utils/testGitHubAPI";
+import { getCacheStatus } from "../../utils/optimizedProjectFetcher";
 
 function Projects() {
   // Use the custom hook to fetch projects automatically from GitHub
@@ -12,6 +14,15 @@ function Projects() {
 
   // Show first 6 projects by default, all if showAll is true
   const displayedProjects = showAll ? projects : projects.slice(0, 6);
+
+  // Test function
+  const runTest = async () => {
+    console.log('🧪 Running GitHub API test...');
+    await testGitHubAPI();
+  };
+
+  // Get cache status
+  const cacheStatus = getCacheStatus();
 
   return (
     <Container fluid className="project-section">
@@ -25,6 +36,11 @@ function Projects() {
           {lastUpdated && (
             <span style={{ fontSize: "12px", opacity: 0.7, display: "block", marginTop: "5px" }}>
               <FaClock /> Last updated: {new Date(lastUpdated).toLocaleString()}
+            </span>
+          )}
+          {cacheStatus.hasCache && (
+            <span style={{ fontSize: "12px", opacity: 0.7, display: "block", marginTop: "5px" }}>
+              <FaDatabase /> Cached (API calls: {cacheStatus.fetchCount}/3 per day)
             </span>
           )}
         </p>
@@ -65,6 +81,13 @@ function Projects() {
             <FaSync className={loading ? "fa-spin" : ""} /> 
             {loading ? " Refreshing..." : " Refresh from GitHub"}
           </Button>
+          <Button 
+            variant="outline-warning" 
+            onClick={runTest}
+            style={{ marginRight: "10px" }}
+          >
+            <FaBug /> Test API
+          </Button>
           <span style={{ color: "white", marginLeft: "15px" }}>
             Showing {displayedProjects.length} of {projects.length} projects
           </span>
@@ -75,15 +98,16 @@ function Projects() {
           {displayedProjects.length > 0 ? (
             displayedProjects.map((project) => (
               <Col md={4} className="project-card" key={project.id}>
-                <ProjectCard
+            <ProjectCard
                   imgPath={project.imgPath}
                   isBlog={project.isBlog}
                   title={project.title}
                   description={project.description}
                   ghLink={project.ghLink}
                   demoLink={project.demoLink}
-                />
-              </Col>
+                  technologies={project.technologies}
+            />
+          </Col>
             ))
           ) : (
             !loading && (
@@ -95,7 +119,7 @@ function Projects() {
                 <Button variant="outline-light" onClick={refreshProjects}>
                   Refresh from GitHub
                 </Button>
-              </Col>
+          </Col>
             )
           )}
         </Row>

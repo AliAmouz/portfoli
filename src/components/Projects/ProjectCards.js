@@ -13,6 +13,35 @@ function ProjectCards(props) {
         <Card.Text style={{ textAlign: "justify" }}>
           {props.description}
         </Card.Text>
+        
+        {/* Technologies */}
+        {props.technologies && props.technologies.length > 0 && (
+          <div style={{ marginBottom: "15px" }}>
+            <div style={{ 
+              display: "flex", 
+              flexWrap: "wrap", 
+              gap: "5px",
+              marginBottom: "10px"
+            }}>
+              {props.technologies.slice(0, 6).map((tech, index) => (
+                <span
+                  key={index}
+                  style={{
+                    backgroundColor: "#6c757d",
+                    color: "white",
+                    padding: "2px 8px",
+                    borderRadius: "12px",
+                    fontSize: "11px",
+                    fontWeight: "bold"
+                  }}
+                >
+                  {tech}
+                </span>
+              ))}
+            </div>
+          </div>
+        )}
+        
         <Button variant="primary" href={props.ghLink} target="_blank">
           <BsGithub /> &nbsp;
           {props.isBlog ? "Blog" : "GitHub"}

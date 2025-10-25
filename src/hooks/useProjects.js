@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
-import { fetchAllProjects, clearProjectsCache } from '../utils/githubProjectFetcher';
+import { getOptimizedProjects, clearProjectCache } from '../utils/optimizedProjectFetcher';
 
 // Custom hook for managing projects
 export const useProjects = (autoFetch = true, refreshInterval = 600000) => { // 10 minutes default
@@ -8,7 +8,7 @@ export const useProjects = (autoFetch = true, refreshInterval = 600000) => { // 
   const [error, setError] = useState(null);
   const [lastUpdated, setLastUpdated] = useState(null);
 
-  // Fetch projects from GitHub
+  // Fetch projects from GitHub (optimized)
   const fetchProjects = useCallback(async (forceRefresh = false) => {
     if (!autoFetch && !forceRefresh) return;
 
@@ -16,12 +16,12 @@ export const useProjects = (autoFetch = true, refreshInterval = 600000) => { // 
     setError(null);
 
     try {
-      const githubProjects = await fetchAllProjects(forceRefresh);
+      const githubProjects = await getOptimizedProjects(forceRefresh);
       
       if (githubProjects && githubProjects.length > 0) {
         setProjects(githubProjects);
         setLastUpdated(new Date().toISOString());
-        console.log(`Loaded ${githubProjects.length} projects from GitHub`);
+        console.log(`Loaded ${githubProjects.length} projects (optimized)`);
       } else {
         setError('No projects found');
       }
@@ -35,7 +35,7 @@ export const useProjects = (autoFetch = true, refreshInterval = 600000) => { // 
 
   // Manual refresh function
   const refreshProjects = useCallback(() => {
-    clearProjectsCache();
+    clearProjectCache();
     fetchProjects(true);
   }, [fetchProjects]);
 
@@ -54,7 +54,7 @@ export const useProjects = (autoFetch = true, refreshInterval = 600000) => { // 
   // Cleanup on unmount
   useEffect(() => {
     return () => {
-      clearProjectsCache();
+      // Don't clear cache on unmount for persistence
     };
   }, []);
 

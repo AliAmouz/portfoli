@@ -89,13 +89,33 @@ export const extractProjectDescription = (repo) => {
 };
 
 /**
+ * Extracts technologies from repository
+ */
+export const getTechnologies = (repo) => {
+  const technologies = [];
+  
+  // Add primary language
+  if (repo.language) {
+    technologies.push(repo.language);
+  }
+  
+  // Add topics as technologies
+  if (repo.topics && repo.topics.length > 0) {
+    technologies.push(...repo.topics.slice(0, 5)); // Limit to 5 topics
+  }
+  
+  // Remove duplicates and return
+  return [...new Set(technologies)];
+};
+
+/**
  * Determines if a repository should be included
  */
 export const shouldIncludeRepository = (repo) => {
-  const { excludeRepos, includeTopics } = PROJECT_CONFIG.github;
+  const { excludeRepos } = PROJECT_CONFIG.github;
   const { minRepoSize, minStars, minForks, excludeForks, includeArchived } = PROJECT_CONFIG.filtering;
   
-  // Exclude specific repositories
+  // Only exclude specific repositories
   if (excludeRepos.includes(repo.name)) {
     return false;
   }
@@ -110,7 +130,7 @@ export const shouldIncludeRepository = (repo) => {
     return false;
   }
   
-  // Check minimum size
+  // Check minimum size (now set to 0 to include all)
   if (repo.size < minRepoSize) {
     return false;
   }
@@ -125,20 +145,8 @@ export const shouldIncludeRepository = (repo) => {
     return false;
   }
   
-  // Prioritize repositories with topics
-  if (repo.topics && repo.topics.length > 0) {
-    const hasRelevantTopic = repo.topics.some(topic => 
-      includeTopics.some(includedTopic => 
-        topic.toLowerCase().includes(includedTopic.toLowerCase())
-      )
-    );
-    if (hasRelevantTopic) {
-      return true;
-    }
-  }
-  
-  // Include repositories with good activity
-  return repo.stargazers_count > 0 || repo.forks_count > 0 || repo.updated_at > new Date(Date.now() - 365 * 24 * 60 * 60 * 1000).toISOString();
+  // Include all repositories that pass the basic filters
+  return true;
 };
 
 /**
@@ -163,9 +171,14 @@ export const fetchAllProjects = async (forceRefresh = false) => {
     const projects = [];
     
     for (const repo of repositories) {
+      console.log(`Checking repository: ${repo.name} (size: ${repo.size}, stars: ${repo.stargazers_count}, forks: ${repo.forks_count})`);
+      
       if (!shouldIncludeRepository(repo)) {
+        console.log(`Excluding repository: ${repo.name}`);
         continue;
       }
+      
+      console.log(`Including repository: ${repo.name}`);
       
       // Check for repository image
       const imageUrl = await checkRepositoryImage(repo.name);
@@ -182,6 +195,7 @@ export const fetchAllProjects = async (forceRefresh = false) => {
         forks: repo.forks_count,
         updated: repo.updated_at,
         topics: repo.topics || [],
+        technologies: getTechnologies(repo),
         isBlog: false,
         source: 'github'
       };
