@@ -1,6 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
-import { fetchAllWriteups, clearWriteupsCache } from '../utils/githubWriteupFetcher';
-import machinesData from '../Assets/machines.json';
+import { getOptimizedWriteups, clearWriteupCache } from '../utils/optimizedWriteupFetcher';
 
 // Custom hook for managing writeups
 export const useWriteups = (autoFetch = true, refreshInterval = 300000) => { // 5 minutes default
@@ -9,23 +8,7 @@ export const useWriteups = (autoFetch = true, refreshInterval = 300000) => { // 
   const [error, setError] = useState(null);
   const [lastUpdated, setLastUpdated] = useState(null);
 
-  // Load local writeups as fallback
-  const loadLocalWriteups = useCallback(() => {
-    try {
-      const localWriteups = machinesData.machines.map((machine, index) => ({
-        ...machine,
-        id: machine.id,
-        source: 'local',
-        lastUpdated: new Date().toISOString()
-      }));
-      return localWriteups;
-    } catch (error) {
-      console.error('Error loading local writeups:', error);
-      return [];
-    }
-  }, []);
-
-  // Fetch writeups from GitHub
+  // Fetch writeups (optimized)
   const fetchWriteups = useCallback(async (forceRefresh = false) => {
     if (!autoFetch && !forceRefresh) return;
 
@@ -33,35 +16,26 @@ export const useWriteups = (autoFetch = true, refreshInterval = 300000) => { // 
     setError(null);
 
     try {
-      const githubWriteups = await fetchAllWriteups(forceRefresh);
+      const writeupsData = await getOptimizedWriteups(forceRefresh);
       
-      if (githubWriteups && githubWriteups.length > 0) {
-        setWriteups(githubWriteups);
+      if (writeupsData && writeupsData.length > 0) {
+        setWriteups(writeupsData);
         setLastUpdated(new Date().toISOString());
-        console.log(`Loaded ${githubWriteups.length} writeups from GitHub`);
+        console.log(`Loaded ${writeupsData.length} writeups (optimized)`);
       } else {
-        // Fallback to local writeups if GitHub fetch fails
-        const localWriteups = loadLocalWriteups();
-        setWriteups(localWriteups);
-        setLastUpdated(new Date().toISOString());
-        console.log(`Fell back to ${localWriteups.length} local writeups`);
+        setError('No writeups found');
       }
     } catch (error) {
       console.error('Error fetching writeups:', error);
       setError(error.message);
-      
-      // Fallback to local writeups on error
-      const localWriteups = loadLocalWriteups();
-      setWriteups(localWriteups);
-      setLastUpdated(new Date().toISOString());
     } finally {
       setLoading(false);
     }
-  }, [autoFetch, loadLocalWriteups]);
+  }, [autoFetch]);
 
   // Manual refresh function
   const refreshWriteups = useCallback(() => {
-    clearWriteupsCache();
+    clearWriteupCache();
     fetchWriteups(true);
   }, [fetchWriteups]);
 
@@ -80,7 +54,7 @@ export const useWriteups = (autoFetch = true, refreshInterval = 300000) => { // 
   // Cleanup on unmount
   useEffect(() => {
     return () => {
-      clearWriteupsCache();
+      // Don't clear cache on unmount for persistence
     };
   }, []);
 

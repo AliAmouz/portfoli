@@ -1,10 +1,10 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { Container, Button, Spinner, Alert } from "react-bootstrap";
 import { useParams } from "react-router-dom";
 import { FaGithub, FaCalendar, FaTag, FaSync } from "react-icons/fa";
 import { SiTryhackme, SiHackthebox } from "react-icons/si";
 import Particle from "../Particle";
-import { fetchWriteupById } from "../../utils/githubWriteupFetcher";
+import { fetchWriteupById } from "../../utils/optimizedWriteupFetcher";
 import { markdownToHtml } from "./writeupUtils";
 
 // Fallback writeup data for when GitHub fetch fails
@@ -431,7 +431,7 @@ function WriteupViewer() {
 
   const [error, setError] = useState(null);
 
-  const loadWriteup = async (platform = "tryhackme") => {
+  const loadWriteup = useCallback(async (platform = "tryhackme") => {
     try {
       setLoading(true);
       setError(null);
@@ -464,7 +464,7 @@ function WriteupViewer() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [writeupId]);
 
   const retryLoad = () => {
     loadWriteup();
@@ -474,7 +474,7 @@ function WriteupViewer() {
     if (writeupId) {
       loadWriteup();
     }
-  }, [writeupId]);
+  }, [writeupId, loadWriteup]);
 
   const getPlatformIcon = (platform) => {
     switch (platform?.toLowerCase()) {
